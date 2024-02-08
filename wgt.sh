@@ -1,4 +1,6 @@
 #!/bin/bash
+
+export PATH=$PATH:/root/WireGuard-Tunnel/
 source menu.sh
 
 # Check if WireGuard is installed
