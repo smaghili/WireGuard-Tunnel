@@ -42,7 +42,7 @@ configure_wireguard_server() {
     echo "Configuring WireGuard Server..."
 
     # Create WireGuard configuration file at /etc/wireguard/wg0
-    wg_config="/etc/wireguard/wg0"
+    wg_config="/etc/wireguard/wg0.conf"
     cat <<EOF | sudo tee "$wg_config" >/dev/null
 # Server configuration
 
@@ -73,7 +73,7 @@ add_client_to_peers() {
     read -p "Enter the PublicKey of the WireGuard client: " client_public_key
 
     # Check if the client's public key already exists in the configuration
-    wg_config="/etc/wireguard/wg0"
+    wg_config="/etc/wireguard/wg0.conf"
     if grep -q "$client_public_key" "$wg_config"; then
         echo "Client already exists in the configuration."
     else
@@ -92,13 +92,14 @@ EOF
 # Configure WireGuard client
 configure_wireguard_client() {
     client_private_key=$(cat privatekey)
+    GW=$(/sbin/ip route | awk '/default/ { print $3 }')
     read -p "Enter the PublicKey of the WireGuard server: " server_public_key
     read -p "Enter the server's IP address: " server_ip
 
     echo "Configuring WireGuard Client..."
 
     # Create WireGuard configuration for the client at /etc/wireguard/wg0
-    wg_client_config="/etc/wireguard/wg0"
+    wg_client_config="/etc/wireguard/wg0.conf"
     cat <<EOF | sudo tee "$wg_client_config" >/dev/null
 # Client configuration
 
@@ -108,9 +109,9 @@ Address = 10.8.0.2/32
 MTU = 1200
 DNS = 8.8.8.8, 8.8.4.4
 
-PreUp = sh /root/iran-route.sh
-PreUp = ip route add $server_ip via \$gw dev $YOUR_INTERFACE
-PostDown = ip route del $server_ip via \$gw dev $YOUR_INTERFACE
+PreUp = sh /root/iran-route.sh.x
+PreUp = ip route add $server_ip via $GW dev $YOUR_INTERFACE
+PostDown = ip route del $server_ip via $GW dev $YOUR_INTERFACE
 PreUp = udp2raw_amd64 -c -l 127.0.0.1:51820 -r $server_ip:4096 -k "your-password" --raw-mode faketcp -a --log-level 0 &
 Postdown = pkill -f "udp2raw.*:51820"
 
