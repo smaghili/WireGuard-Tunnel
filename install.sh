@@ -17,7 +17,7 @@ cd WireGuard-Tunnel
 # ...
 
 # Create an alias for 'wgt' in the user's bashrc
-echo 'alias wgt="/root/WireGuard-Tunnel/wgt.sh"' >> ~/.bashrc
+echo 'alias wgt="./wgt.sh"' >> ~/.bashrc
 
 # Source the bashrc to apply changes
 source ~/.bashrc
