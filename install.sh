@@ -25,4 +25,4 @@ source ~/.bashrc
 echo "Setup complete. You can now use the 'wgt' command."
 
 # Optionally, show the menu after completing the setup
-./root/WireGuard-Tunnel/wgt.sh
+sh wgt.sh
