@@ -9,6 +9,7 @@ if ! command -v wg &> /dev/null; then
     sudo apt install wireguard -y
 fi
 
+apt install resolvconf -y
 # WireGuard directory path
 wg_path="/etc/wireguard"
 
