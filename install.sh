@@ -7,7 +7,7 @@ repo_url="https://github.com/smaghili/WireGuard-Tunnel.git"
 git clone "$repo_url"
 
 # Navigate to the cloned repository directory
-
+apt install resolvconf -y
 
 # Set execute permissions for scripts
 chmod +x -R WireGuard-Tunnel
