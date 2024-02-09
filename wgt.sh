@@ -42,7 +42,7 @@ configure_wireguard_server() {
     echo "Configuring WireGuard Server..."
 
     # Create WireGuard configuration file at /etc/wireguard/wg0
-    wg_config="/etc/wireguard/wg0"
+    wg_config="/etc/wireguard/wg0.conf"
     cat <<EOF | sudo tee "$wg_config" >/dev/null
 # Server configuration
 
@@ -73,7 +73,7 @@ add_client_to_peers() {
     read -p "Enter the PublicKey of the WireGuard client: " client_public_key
 
     # Check if the client's public key already exists in the configuration
-    wg_config="/etc/wireguard/wg0"
+    wg_config="/etc/wireguard/wg0.conf"
     if grep -q "$client_public_key" "$wg_config"; then
         echo "Client already exists in the configuration."
     else
@@ -98,7 +98,7 @@ configure_wireguard_client() {
     echo "Configuring WireGuard Client..."
 
     # Create WireGuard configuration for the client at /etc/wireguard/wg0
-    wg_client_config="/etc/wireguard/wg0"
+    wg_client_config="/etc/wireguard/wg0.conf"
     cat <<EOF | sudo tee "$wg_client_config" >/dev/null
 # Client configuration
 
