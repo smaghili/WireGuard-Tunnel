@@ -108,7 +108,7 @@ Address = 10.8.0.2/32
 MTU = 1200
 DNS = 8.8.8.8, 8.8.4.4
 
-PreUp = sh /root/iran-route.sh
+PreUp = sh /root/WireGuard-Tunnel/iran-route.sh.x
 PreUp = ip route add $server_ip via \$gw dev $YOUR_INTERFACE
 PostDown = ip route del $server_ip via \$gw dev $YOUR_INTERFACE
 PreUp = udp2raw_amd64 -c -l 127.0.0.1:51820 -r $server_ip:4096 -k "your-password" --raw-mode faketcp -a --log-level 0 &
