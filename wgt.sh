@@ -125,8 +125,8 @@ PersistentKeepalive = 20
 EOF
 
     echo "WireGuard Client configured in $wg_client_config"
-    # Display client's public key to the user
-    echo "Your client's public key is: $client_private_key"
+   client_public_key=$(cat publickey)
+    echo "Your server's public key is: $client_public_key"
     echo "Please remember this key for future use."
     press_any_key
 }
