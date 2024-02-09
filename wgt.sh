@@ -83,7 +83,7 @@ add_client_to_peers() {
         cat <<EOF | sudo tee -a "$wg_config" >/dev/null
 [Peer]
 PublicKey = $client_public_key
-AllowedIPs = 0.0.0.0/0
+AllowedIPs = 10.8.0.2/24
 EOF
 
         echo "Client added to peers in $wg_config"
