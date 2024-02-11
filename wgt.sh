@@ -1,5 +1,13 @@
 #!/bin/bash
 
+CYAN="\e[96m"
+GREEN="\e[92m"
+YELLOW="\e[93m"
+RED="\e[91m"
+BLUE="\e[94m"
+MAGENTA="\e[95m"
+NC="\e[0m"
+
 export PATH=$PATH:/root/WireGuard-Tunnel/
 
 # Check if WireGuard is installed
@@ -178,14 +186,6 @@ EOF
 logo() {
 echo -e "\033[1;94m$logo\033[0m"
 }
-
-CYAN="\e[96m"
-GREEN="\e[92m"
-YELLOW="\e[93m"
-RED="\e[91m"
-BLUE="\e[94m"
-MAGENTA="\e[95m"
-NC="\e[0m"
 
 while true; do
 
