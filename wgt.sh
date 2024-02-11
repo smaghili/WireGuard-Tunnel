@@ -1,5 +1,7 @@
 #!/bin/bash
+
 export PATH=$PATH:/root/WireGuard-Tunnel/
+source menu.sh
 
 # Check if WireGuard is installed
 if ! command -v wg &> /dev/null; then
@@ -124,7 +126,7 @@ EOF
 
     echo "WireGuard Client configured in $wg_client_config"
    client_public_key=$(cat publickey)
-    echo "Your Client public key is: $client_public_key"
+    echo "Your server's public key is: $client_public_key"
     echo "Please remember this key for future use."
     press_any_key
 }
@@ -157,75 +159,44 @@ show_wireguard_status() {
 press_any_key() {
    read -n 1 -s -r -p $'\nPress any key to show menu...\n'
 }
-CYAN="\e[96m"
-GREEN="\e[92m"
-YELLOW="\e[93m"
-RED="\e[91m"
-BLUE="\e[94m"
-MAGENTA="\e[95m"
-NC="\e[0m"
 
-logo=$(cat << "EOF"
- 
-       _         _   _            _______                     _ 
-      | |  /\   | \ | |   /\     |__   __|                   | |
-      | | /  \  |  \| |  /  \       | |_   _ _   _ _ __   ___| |
-  _   | |/ /\ \ | . ` | / /\ \      | | | | | | | | '_ \ / _ \ |
- | |__| / ____ \| |\  |/ ____ \     | | |_| | |_| | | | |  __/ |
-  \____/_/    \_\_| \_/_/    \_\    |_|\__,_|\__,_|_| |_|\___|_|
-
-EOF
-)
 while true; do
-    linux_version=$(awk -F= '/^PRETTY_NAME=/{gsub(/"/, "", $2); print $2}' /etc/os-release)
-    kernel_version=$(uname -r)
-    tg_title="https://t.me/OPIranCluB"
-    yt_title="youtube.com/@opiran-inistitute"
-    clear
-    logo
-    echo -e "\e[93m╔═══════════════════════════════════════════════╗\e[0m"  
-    echo -e "\e[93m║            \e[96mWireguard Menu Tunnel              \e[93m║\e[0m"   
-    echo -e "\e[93m╠═══════════════════════════════════════════════╣\e[0m"
-    echo ""
-    echo -e "${GREEN} 1) ${NC} Configure WireGuard Server ${NC}"
-    echo -e "${GREEN} 2) ${NC} Configure WireGuard Client ${NC}"
-    echo ""
-    echo -e "${GREEN} 3) ${NC} Add Client To Peers ${NC}"
-    echo ""
-    echo -e "${GREEN} 4) ${NC} Start WireGuard Service ${NC}"
-    echo -e "${GREEN} 5) ${NC} Restart WireGuard Service ${NC}"
-    echo -e "${GREEN} 6) ${NC} Stop WireGuard Service ${NC}"
-    echo -e "${GREEN} 7) ${NC} Status WireGuard Service ${NC}"
-    printf "\e[93m+-----------------------------------------------+\e[0m\n" 
-    echo ""
-    echo -e "${GREEN} 1) ${NC} Install XanMod kernel & BBRv3 & Grub boot conf. ${NC}"
-    echo -e "${GREEN} 2) ${NC} Uninstall XanMod kernel and restore to default ${NC}"
-    echo ""
-    echo -e "${GREEN} 8) ${NC} Exit the menu${NC}"
-    echo ""
-    echo -ne "${GREEN}Select an option: ${NC}  "
-    read choice
+    # Create a menu with the main options
+    declare -a main_menu=("Configure WireGuard Server" "Configure WireGuard Client" "Add Client To Peers" "Start WireGuard Service" "Restart WireGuard Service" "Stop WireGuard Service" "Show WireGuard Status" "Quit")
+    generateDialog "options" "Wireguard Tunnel Menu" "${main_menu[@]}"
 
+    # Read user input
+    read -p "Enter your choice: " choice
+
+    # Perform actions based on the selected option
     case $choice in
- 
         1)
-            install_xanmod
-            bbrv3
-            ask_reboot
+            configure_wireguard_server
             ;;
         2)
-            uninstall_xanmod
-            ask_reboot
+            configure_wireguard_client
             ;;
-        E|e)
+        3)
+            add_client_to_peers
+            ;;
+        4)
+            start_wireguard_service
+            ;;
+        5)
+            restart_wireguard_service
+            ;;
+        6)
+            stop_wireguard_service
+            ;;
+        7)
+            show_wireguard_status
+            ;;
+        8)
             echo "Exiting..."
-            exit 0
+            break
             ;;
         *)
-            echo "Invalid choice. Please enter a valid option."
+            echo "Invalid choice. Please try again."
             ;;
     esac
-
-    echo -e "\n${RED}Press Enter to continue... ${NC}"
-    read
 done
