@@ -199,7 +199,7 @@ uninstall_script() {
 
     # Remove WireGuard directory
     sudo rm -rf /etc/wireguard
-    suro rm -rf /root/WireGuard-Tunnel/
+    sudo rm -rf /root/WireGuard-Tunnel/
     clear
 }
 
