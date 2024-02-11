@@ -159,13 +159,7 @@ press_any_key() {
    read -n 1 -s -r -p $'\nPress any key to show menu...\n'
 }
 
-CYAN="\e[96m"
-GREEN="\e[92m"
-YELLOW="\e[93m"
-RED="\e[91m"
-BLUE="\e[94m"
-MAGENTA="\e[95m"
-NC="\e[0m"
+
 
 
 
@@ -186,6 +180,13 @@ echo -e "\033[1;94m$logo\033[0m"
 }
 
 while true; do
+CYAN="\e[96m"
+GREEN="\e[92m"
+YELLOW="\e[93m"
+RED="\e[91m"
+BLUE="\e[94m"
+MAGENTA="\e[95m"
+NC="\e[0m"
     clear
     logo
     echo -e "\e[93m╔═══════════════════════════════════════════════╗\e[0m"  
