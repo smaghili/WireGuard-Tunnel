@@ -205,7 +205,7 @@ while true; do
     echo -e "${GREEN} 6 ${NC} Stop WireGuard Service ${NC}"
     echo -e "${GREEN} 7 ${NC} Show WireGuard Status ${NC}"
     echo ""
-    echo -e "${GREEN} 8) ${NC} Exit the menu${NC}"
+    echo -e "${GREEN} 8 ${NC} Exit the menu${NC}"
     printf "\e[93m+-----------------------------------------------+\e[0m\n" 
     echo ""
     echo ""
