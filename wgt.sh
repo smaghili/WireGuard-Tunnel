@@ -179,7 +179,6 @@ logo() {
 echo -e "\033[1;94m$logo\033[0m"
 }
 
-while true; do
 CYAN="\e[96m"
 GREEN="\e[92m"
 YELLOW="\e[93m"
@@ -187,14 +186,17 @@ RED="\e[91m"
 BLUE="\e[94m"
 MAGENTA="\e[95m"
 NC="\e[0m"
+
+while true; do
+
     clear
     logo
     echo -e "\e[93m╔═══════════════════════════════════════════════╗\e[0m"  
     echo -e "\e[93m║            \e[96m WireGuard Tunnel Menu             \e[93m║\e>    
     echo -e "\e[93m╠═══════════════════════════════════════════════╣\e[0m"
     echo ""
-echo -e "${GREEN} 1) ${NC} Configure WireGuard Server ${NC}"
-echo -e "${GREEN} 2) ${NC} Configure WireGuard Client ${NC}"
+    echo -e "${GREEN} 1) ${NC} Configure WireGuard Server ${NC}"
+    echo -e "${GREEN} 2) ${NC} Configure WireGuard Client ${NC}"
     echo ""
     echo -e "${GREEN} 3) ${NC} Add Client To Peers ${NC}"
     echo ""
