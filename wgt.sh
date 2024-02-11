@@ -195,7 +195,7 @@ while true; do
     echo -e "\e[93m║            \e[96m WireGuard Tunnel Menu             \e[93m║\e>    
     echo -e "\e[93m╠═══════════════════════════════════════════════╣\e[0m"
     echo ""
-    echo -e "${GREEN} 1) ${NC} Configure WireGuard Server ${NC}"
+    echo -e "$GREEN 1 $NC Configure WireGuard Server $NC"
     echo -e "${GREEN} 2) ${NC} Configure WireGuard Client ${NC}"
     echo ""
     echo -e "${GREEN} 3) ${NC} Add Client To Peers ${NC}"
