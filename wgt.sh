@@ -125,7 +125,7 @@ EOF
 
     echo "WireGuard Client configured in $wg_client_config"
    client_public_key=$(cat publickey)
-    echo "Your server's public key is: $client_public_key"
+    echo "Your Client public key is: $client_public_key"
     echo "Please remember this key for future use."
     press_any_key
 }
