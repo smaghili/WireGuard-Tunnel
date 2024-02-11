@@ -1,13 +1,4 @@
 #!/bin/bash
-
-CYAN="\e[96m"
-GREEN="\e[92m"
-YELLOW="\e[93m"
-RED="\e[91m"
-BLUE="\e[94m"
-MAGENTA="\e[95m"
-NC="\e[0m"
-
 export PATH=$PATH:/root/WireGuard-Tunnel/
 
 # Check if WireGuard is installed
@@ -166,13 +157,16 @@ show_wireguard_status() {
 press_any_key() {
    read -n 1 -s -r -p $'\nPress any key to show menu...\n'
 }
-
-
-
-
+CYAN="\e[96m"
+GREEN="\e[92m"
+YELLOW="\e[93m"
+RED="\e[91m"
+BLUE="\e[94m"
+MAGENTA="\e[95m"
+NC="\e[0m"
 
 logo=$(cat << "EOF"
-
+ 
        _         _   _            _______                     _ 
       | |  /\   | \ | |   /\     |__   __|                   | |
       | | /  \  |  \| |  /  \       | |_   _ _   _ _ __   ___| |
@@ -182,65 +176,56 @@ logo=$(cat << "EOF"
 
 EOF
 )
-
-logo() {
-echo -e "\033[1;94m$logo\033[0m"
-}
-
 while true; do
-
+    linux_version=$(awk -F= '/^PRETTY_NAME=/{gsub(/"/, "", $2); print $2}' /etc/os-release)
+    kernel_version=$(uname -r)
+    tg_title="https://t.me/OPIranCluB"
+    yt_title="youtube.com/@opiran-inistitute"
     clear
     logo
     echo -e "\e[93m╔═══════════════════════════════════════════════╗\e[0m"  
-    echo -e "\e[93m║            \e[96m WireGuard Tunnel Menu             \e[93m║\e>    
+    echo -e "\e[93m║            \e[96mWireguard Menu Tunnel              \e[93m║\e[0m"   
     echo -e "\e[93m╠═══════════════════════════════════════════════╣\e[0m"
     echo ""
-    echo -e "$GREEN 1 $NC Configure WireGuard Server $NC"
-    echo -e "$GREEN 2 $NC Configure WireGuard Client $NC"
+    echo -e "${GREEN} 1) ${NC} Configure WireGuard Server ${NC}"
+    echo -e "${GREEN} 2) ${NC} Configure WireGuard Client ${NC}"
     echo ""
-    echo -e "$GREEN 3 $NC Add Client To Peers $NC"
+    echo -e "${GREEN} 3) ${NC} Add Client To Peers ${NC}"
     echo ""
-    echo -e "${GREEN} 4 ${NC} Start WireGuard Service ${NC}"
-    echo -e "${GREEN} 5 ${NC} Restart WireGuard Service ${NC}"
-    echo -e "${GREEN} 6 ${NC} Stop WireGuard Service ${NC}"
-    echo -e "${GREEN} 7 ${NC} Show WireGuard Status ${NC}"
-    echo ""
-    echo -e "${GREEN} 8 ${NC} Exit the menu${NC}"
+    echo -e "${GREEN} 4) ${NC} Start WireGuard Service ${NC}"
+    echo -e "${GREEN} 5) ${NC} Restart WireGuard Service ${NC}"
+    echo -e "${GREEN} 6) ${NC} Stop WireGuard Service ${NC}"
+    echo -e "${GREEN} 7) ${NC} Status WireGuard Service ${NC}"
     printf "\e[93m+-----------------------------------------------+\e[0m\n" 
     echo ""
+    echo -e "${GREEN} 1) ${NC} Install XanMod kernel & BBRv3 & Grub boot conf. ${NC}"
+    echo -e "${GREEN} 2) ${NC} Uninstall XanMod kernel and restore to default ${NC}"
+    echo ""
+    echo -e "${GREEN} 8) ${NC} Exit the menu${NC}"
     echo ""
     echo -ne "${GREEN}Select an option: ${NC}  "
     read choice
 
-    # Perform actions based on the selected option
     case $choice in
+ 
         1)
-            configure_wireguard_server
+            install_xanmod
+            bbrv3
+            ask_reboot
             ;;
         2)
-            configure_wireguard_client
+            uninstall_xanmod
+            ask_reboot
             ;;
-        3)
-            add_client_to_peers
-            ;;
-        4)
-            start_wireguard_service
-            ;;
-        5)
-            restart_wireguard_service
-            ;;
-        6)
-            stop_wireguard_service
-            ;;
-        7)
-            show_wireguard_status
-            ;;
-        8)
+        E|e)
             echo "Exiting..."
-            break
+            exit 0
             ;;
         *)
-            echo "Invalid choice. Please try again."
+            echo "Invalid choice. Please enter a valid option."
             ;;
     esac
+
+    echo -e "\n${RED}Press Enter to continue... ${NC}"
+    read
 done
