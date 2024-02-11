@@ -1,7 +1,6 @@
 #!/bin/bash
 
 export PATH=$PATH:/root/WireGuard-Tunnel/
-source menu.sh
 
 # Check if WireGuard is installed
 if ! command -v wg &> /dev/null; then
@@ -160,13 +159,55 @@ press_any_key() {
    read -n 1 -s -r -p $'\nPress any key to show menu...\n'
 }
 
-while true; do
-    # Create a menu with the main options
-    declare -a main_menu=("Configure WireGuard Server" "Configure WireGuard Client" "Add Client To Peers" "Start WireGuard Service" "Restart WireGuard Service" "Stop WireGuard Service" "Show WireGuard Status" "Quit")
-    generateDialog "options" "Wireguard Tunnel Menu" "${main_menu[@]}"
+CYAN="\e[96m"
+GREEN="\e[92m"
+YELLOW="\e[93m"
+RED="\e[91m"
+BLUE="\e[94m"
+MAGENTA="\e[95m"
+NC="\e[0m"
 
-    # Read user input
-    read -p "Enter your choice: " choice
+
+
+logo=$(cat << "EOF"
+
+       _         _   _            _______                     _ 
+      | |  /\   | \ | |   /\     |__   __|                   | |
+      | | /  \  |  \| |  /  \       | |_   _ _   _ _ __   ___| |
+  _   | |/ /\ \ | . ` | / /\ \      | | | | | | | | '_ \ / _ \ |
+ | |__| / ____ \| |\  |/ ____ \     | | |_| | |_| | | | |  __/ |
+  \____/_/    \_\_| \_/_/    \_\    |_|\__,_|\__,_|_| |_|\___|_|
+
+EOF
+)
+
+logo() {
+echo -e "\033[1;94m$logo\033[0m"
+}
+
+while true; do
+    clear
+    logo
+    echo -e "\e[93m╔═══════════════════════════════════════════════╗\e[0m"  
+    echo -e "\e[93m║            \e[96m WireGuard Tunnel Menu             \e[93m║\e>    
+    echo -e "\e[93m╠═══════════════════════════════════════════════╣\e[0m"
+    echo ""
+    echo -e "${GREEN} 1) ${NC} Configure WireGuard Server ${NC}"
+    echo -e "${GREEN} 2) ${NC} Configure WireGuard Client ${NC}"
+    echo ""
+    echo -e "${GREEN} 3) ${NC} Add Client To Peers ${NC}"
+    echo ""
+    echo -e "${GREEN} 4) ${NC} Start WireGuard Service ${NC}"
+    echo -e "${GREEN} 5) ${NC} Restart WireGuard Service ${NC}"
+    echo -e "${GREEN} 6) ${NC} Stop WireGuard Service ${NC}"
+    echo -e "${GREEN} 7) ${NC} Show WireGuard Status ${NC}"
+    echo ""
+    echo -e "${GREEN} 8) ${NC} Exit the menu${NC}"
+    printf "\e[93m+-----------------------------------------------+\e[0m\n" 
+    echo ""
+    echo ""
+    echo -ne "${GREEN}Select an option: ${NC}  "
+    read choice
 
     # Perform actions based on the selected option
     case $choice in
