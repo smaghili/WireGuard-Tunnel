@@ -97,7 +97,7 @@ AllowedIPs = 10.8.0.2/32
 EOF
     echo ""
     echo -e "\e[93m╔══════════════════════════════════════════════════════╗\e[0m"
-    echo -e "\e[93m║        \e[96m Client added to peers                         \e[93m║\e[0m"
+    echo -e "\e[93m║        \e[96m      Client added to peers                   \e[93m║\e[0m"
     echo -e "\e[93m╚══════════════════════════════════════════════════════╝\e[0m"
     echo ""
         echo "Client added to peers in $wg_config"
