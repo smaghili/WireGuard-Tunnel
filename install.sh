@@ -10,6 +10,43 @@ git clone "$repo_url"
 apt install resolvconf -y
 apt install net-tools -y
 
+# Define the sysctl settings
+SYSCTL_SETTINGS=$(cat <<EOL
+net.ipv4.ip_forward = 1
+net.ipv6.conf.all.forwarding = 0
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+net.core.default_qdisc = fq
+net.ipv4.tcp_congestion_control = bbr
+net.ipv6.conf.all.forwarding = 1
+net.ipv4.tcp_window_scaling = 1
+net.core.rmem_max = 26214400
+net.core.rmem_default = 26214400
+net.core.wmem_max = 26214400
+net.core.wmem_default = 26214400
+net.core.netdev_max_backlog = 2048
+EOL
+)
+
+# Check if sysctl.conf exists, if not create it
+SYSCTL_FILE="/etc/sysctl.conf"
+if [ ! -f "$SYSCTL_FILE" ]; then
+    echo "$SYSCTL_SETTINGS" | sudo tee -a "$SYSCTL_FILE"
+    echo "sysctl.conf created and updated."
+else
+    # Check if settings already exist, if not append them
+    if ! grep -qF "$SYSCTL_SETTINGS" "$SYSCTL_FILE"; then
+        echo "$SYSCTL_SETTINGS" | sudo tee -a "$SYSCTL_FILE"
+        echo "Settings added to sysctl.conf."
+    else
+        echo "Settings already exist in sysctl.conf."
+    fi
+fi
+
+# Apply the changes
+sudo sysctl -p
+echo "Sysctl settings applied."
 # Set execute permissions for scripts
 chmod +x -R WireGuard-Tunnel
 
