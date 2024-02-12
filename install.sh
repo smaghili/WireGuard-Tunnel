@@ -8,6 +8,7 @@ git clone "$repo_url"
 
 # Navigate to the cloned repository directory
 apt install resolvconf -y
+apt install net-tools -y
 
 # Set execute permissions for scripts
 chmod +x -R WireGuard-Tunnel
