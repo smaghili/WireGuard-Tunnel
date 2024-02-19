@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export PATH=$PATH:/root/WireGuard-Tunnel/
-
+sudo su
 CYAN="\e[96m"
 GREEN="\e[92m"
 YELLOW="\e[93m"
@@ -13,7 +13,7 @@ NC="\e[0m"
 # Check if WireGuard is installed
 if ! command -v wg &> /dev/null; then
     echo "WireGuard not installed. Installing..."
-    sudo apt install wireguard -y
+     apt install wireguard -y
 fi
 
 
@@ -22,7 +22,7 @@ wg_path="/etc/wireguard"
 
 # Create directory if not exists
 if [ ! -d "$wg_path" ]; then
-    sudo mkdir -p "$wg_path"
+     mkdir -p "$wg_path"
 fi
 
 # Navigate to WireGuard directory
@@ -39,7 +39,7 @@ if ! command -v udp2raw_amd64 &> /dev/null; then
     echo "udp2raw not installed. Installing..."
     wget https://github.com/wangyu-/udp2raw/releases/download/20200818.0/udp2raw_binaries.tar.gz
     tar xzvf udp2raw_binaries.tar.gz
-    sudo mv udp2raw_amd64 /sbin
+     mv udp2raw_amd64 /sbin
 fi
 
 # Automatically retrieve network interface
@@ -51,7 +51,7 @@ configure_wireguard_server() {
 
     # Create WireGuard configuration file at /etc/wireguard/wg0
     wg_config="/etc/wireguard/wg0.conf"
-    cat <<EOF | sudo tee "$wg_config" >/dev/null
+    cat <<EOF |  tee "$wg_config" >/dev/null
 # Server configuration
 
 [Interface]
@@ -59,7 +59,7 @@ Address = 10.8.0.1/24
 MTU = 1200
 ListenPort = 51820
 PrivateKey = $(cat privatekey)
-PreUp = sudo udp2raw_amd64 -s -l 0.0.0.0:4096 -r 127.0.0.1:51820 -k "your-password" --raw-mode faketcp -a --log-level 0 &
+PreUp =  udp2raw_amd64 -s -l 0.0.0.0:4096 -r 127.0.0.1:51820 -k "your-password" --raw-mode faketcp -a --log-level 0 &
 Postdown = pkill -f "udp2raw.*:51820"
 PostUp = iptables -A FORWARD -i wg0 -j ACCEPT
 PostUp = iptables -t nat -A POSTROUTING -o $YOUR_INTERFACE -j MASQUERADE
@@ -90,7 +90,7 @@ add_client_to_peers() {
         echo "Client already exists in the configuration."
     else
         # Add client to WireGuard configuration
-        cat <<EOF | sudo tee -a "$wg_config" >/dev/null
+        cat <<EOF |  tee -a "$wg_config" >/dev/null
 [Peer]
 PublicKey = $client_public_key
 AllowedIPs = 10.8.0.2/32
@@ -115,7 +115,7 @@ configure_wireguard_client() {
 
     # Create WireGuard configuration for the client at /etc/wireguard/wg0
     wg_client_config="/etc/wireguard/wg0.conf"
-    cat <<EOF | sudo tee "$wg_client_config" >/dev/null
+    cat <<EOF |  tee "$wg_client_config" >/dev/null
 # Client configuration
 
 [Interface]
@@ -149,23 +149,23 @@ EOF
 
 # Start WireGuard service
 start_wireguard_service() {
-    sudo systemctl start wg-quick@wg0
-    sudo systemctl enable wg-quick@wg0
+     systemctl start wg-quick@wg0
+     systemctl enable wg-quick@wg0
 }
 
 # Function to restart WireGuard service
 restart_wireguard_service() {
-    sudo systemctl restart wg-quick@wg0
+     systemctl restart wg-quick@wg0
 }
 
 # Function to stop WireGuard service
 stop_wireguard_service() {
-    sudo systemctl stop wg-quick@wg0
+     systemctl stop wg-quick@wg0
 }
 
 # Function to show WireGuard status
 show_wireguard_status() {
-    sudo systemctl status wg-quick@wg0
+     systemctl status wg-quick@wg0
 }
 
 show_public_key() {
@@ -197,15 +197,15 @@ show_peers() {
 # Function to uninstall WireGuard completely
 uninstall_script() {
     # Stop WireGuard service
-    sudo systemctl stop wg-quick@wg0
-    sudo systemctl disable wg-quick@wg0
+     systemctl stop wg-quick@wg0
+     systemctl disable wg-quick@wg0
     # Uninstall WireGuard
-    sudo apt remove wireguard -y
-    sudo apt autoremove -y
+     apt remove wireguard -y
+     apt autoremove -y
 
     # Remove WireGuard directory
-    sudo rm -rf /etc/wireguard
-    sudo rm -rf /root/WireGuard-Tunnel/
+	 rm -rf /etc/wireguard
+    	 rm -rf /root/WireGuard-Tunnel/
     clear
 }
 
