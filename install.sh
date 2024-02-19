@@ -2,7 +2,7 @@
 export PATH=$PATH:/root/WireGuard-Tunnel/
 # Set the GitHub repository URL
 repo_url="https://github.com/smaghili/WireGuard-Tunnel.git"
-sudo su
+
 
 # Clone the GitHub repository
 git clone "$repo_url"
