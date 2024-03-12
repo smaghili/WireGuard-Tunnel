@@ -10,6 +10,8 @@ BLUE="\e[94m"
 MAGENTA="\e[95m"
 NC="\e[0m"
 
+source ~/.bashrc
+
 # Check if WireGuard is installed
 if ! command -v wg &> /dev/null; then
     echo "WireGuard not installed. Installing..."
