@@ -55,7 +55,7 @@ configure_wireguard_server() {
 # Server configuration
 
 [Interface]
-Address = 10.8.0.1/24
+Address = 192.168.75.1/24
 MTU = 1200
 ListenPort = 51820
 PrivateKey = $(cat privatekey)
@@ -72,9 +72,10 @@ EOF
     echo -e "\e[93m║            \e[96m WireGuard Server configured              \e[93m║\e[0m"
     echo -e "\e[93m╚══════════════════════════════════════════════════════╝\e[0m"
     echo ""
-
+    server_ip= ip addr show $YOUR_INTERFACE | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
     echo "WireGuard server configured in $wg_config"
     server_public_key=$(cat publickey)
+    echo -e  "Your server's IP is: ${MAGENTA} $server_ip ${NC}"
     echo -e  "Your server's public key is: ${MAGENTA} $server_public_key ${NC}"
     echo  "Please remember this key for future use."
 }
@@ -93,7 +94,7 @@ add_client_to_peers() {
         cat <<EOF |  tee -a "$wg_config" >/dev/null
 [Peer]
 PublicKey = $client_public_key
-AllowedIPs = 10.8.0.2/32
+AllowedIPs = 192.168.75.2/32
 EOF
     echo ""
     echo -e "\e[93m╔══════════════════════════════════════════════════════╗\e[0m"
@@ -120,7 +121,7 @@ configure_wireguard_client() {
 
 [Interface]
 PrivateKey = $client_private_key
-Address = 10.8.0.2/32
+Address = 192.168.75.2/32
 MTU = 1200
 DNS = 8.8.8.8, 8.8.4.4
 
@@ -140,9 +141,8 @@ EOF
     echo -e "\e[93m║            \e[96m WireGuard Client configured              \e[93m║\e[0m"
     echo -e "\e[93m╚══════════════════════════════════════════════════════╝\e[0m"
     echo ""
-
     echo "WireGuard Client configured in $wg_client_config"
-   client_public_key=$(cat publickey)
+    client_public_key=$(cat publickey)
     echo -e  "Your client's public key is: ${MAGENTA} $client_public_key ${NC}"
     echo  "Please remember this key for future use."
 }
