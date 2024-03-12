@@ -61,7 +61,7 @@ Address = 192.168.75.1/24
 MTU = 1200
 ListenPort = 51820
 PrivateKey = $(cat privatekey)
-PreUp =  udp2raw_amd64 -s -l 0.0.0.0:4096 -r 127.0.0.1:51820 -k "your-password" --raw-mode faketcp -a --log-level 0 &
+PreUp =  udp2raw_amd64 -s -l 0.0.0.0:4096 -r 127.0.0.1:51820 -k "your-password" --raw-mode udp -a --log-level 0 &
 Postdown = pkill -f "udp2raw.*:51820"
 PostUp = iptables -A FORWARD -i wg0 -j ACCEPT
 PostUp = iptables -t nat -A POSTROUTING -o $YOUR_INTERFACE -j MASQUERADE
@@ -74,10 +74,10 @@ EOF
     echo -e "\e[93m║            \e[96m WireGuard Server configured              \e[93m║\e[0m"
     echo -e "\e[93m╚══════════════════════════════════════════════════════╝\e[0m"
     echo ""
-    server_ip= ip addr show $YOUR_INTERFACE | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
+    server_ip=$(ip addr show $YOUR_INTERFACE | awk '/inet / {print $2}' | cut -d'/' -f1)
     echo "WireGuard server configured in $wg_config"
     server_public_key=$(cat publickey)
-    echo -e  "Your server's IP is: ${MAGENTA} $server_ip ${NC}"
+    echo -e "Your server's IP is: ${MAGENTA} $server_ip ${NC}"
     echo -e  "Your server's public key is: ${MAGENTA} $server_public_key ${NC}"
     echo  "Please remember this key for future use."
 }
@@ -128,7 +128,7 @@ MTU = 1200
 DNS = 8.8.8.8, 8.8.4.4
 
 PreUp = ./root/WireGuard-Tunnel/set-route.sh $server_ip $gw $YOUR_INTERFACE
-PreUp = udp2raw_amd64 -c -l 127.0.0.1:51820 -r $server_ip:4096 -k "your-password" --raw-mode faketcp -a --log-level 0 &
+PreUp = udp2raw_amd64 -c -l 127.0.0.1:51820 -r $server_ip:4096 -k "your-password" --raw-mode udp -a --log-level 0 &
 Postdown = pkill -f "udp2raw.*:51820"
 
 [Peer]
